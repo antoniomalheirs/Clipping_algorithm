@@ -27,6 +27,7 @@ namespace DesenhaPrimitivas
                 {
                     Poligono poligono = new Poligono();
                     poligono.DesenhaForma(graphics, Poligono.ToArray());
+                    poligono.PreencheForma(graphics, Poligono.ToArray());
                 }
             }
         }
@@ -62,6 +63,7 @@ namespace DesenhaPrimitivas
                 {
                     Retangulo ret = new Retangulo();
                     ret.DesenhaForma(graphics, new Point(retangulo.Left, retangulo.Top), new Point(retangulo.Right, retangulo.Bottom));
+                    ret.PreencheForma(graphics, new Point(retangulo.Left, retangulo.Top), new Point(retangulo.Right, retangulo.Bottom));
                 }
             }
         }

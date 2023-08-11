@@ -9,8 +9,8 @@ namespace DesenhaPrimitivas
 {
     public class Desenha
     {
-        protected static Pen caneta = new Pen(Color.Black, 2);
-        protected static Pen caneta2 = new Pen(Color.Red, 2);
+        protected static Pen caneta = new Pen(Color.Black, 5);
+        protected static Brush caneta2 = new SolidBrush(Color.Red);
 
         public virtual void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2)
         {
@@ -20,7 +20,11 @@ namespace DesenhaPrimitivas
         {
         }
 
-        public virtual void PreencheForma()
+        public virtual void PreencheForma(Graphics graphics, Point ponto1, Point ponto2)
+        {
+        }
+
+        public virtual void PreencheForma(Graphics graphics, Point[] ponto)
         {
         }
     }

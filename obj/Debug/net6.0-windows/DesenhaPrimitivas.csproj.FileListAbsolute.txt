@@ -1,0 +1,17 @@
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\bin\Debug\net6.0-windows\DesenhaPrimitivas.exe
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\bin\Debug\net6.0-windows\DesenhaPrimitivas.deps.json
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\bin\Debug\net6.0-windows\DesenhaPrimitivas.runtimeconfig.json
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\bin\Debug\net6.0-windows\DesenhaPrimitivas.dll
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\bin\Debug\net6.0-windows\DesenhaPrimitivas.pdb
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.csproj.AssemblyReference.cache
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.Form1.resources
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.csproj.GenerateResource.cache
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.AssemblyInfoInputs.cache
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.AssemblyInfo.cs
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.csproj.CoreCompileInputs.cache
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.dll
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\refint\DesenhaPrimitivas.dll
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.pdb
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\DesenhaPrimitivas.genruntimeconfig.cache
+C:\Users\Anton\OneDrive\Área de Trabalho\game\recorte\obj\Debug\net6.0-windows\ref\DesenhaPrimitivas.dll

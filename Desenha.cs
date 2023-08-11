@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace DesenhaPrimitivas
 {
-    internal class Desenha
+    public class Desenha
     {
-        static Pen caneta = new Pen(Color.Black, 2);
-        static Pen caneta2 = new Pen(Color.Red, 2);
+        protected static Pen caneta = new Pen(Color.Black, 2);
+        protected static Pen caneta2 = new Pen(Color.Red, 2);
 
-        public static void DesenhaForma()
+        public virtual void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2)
         {
-            var pen = caneta;
         }
 
-        public static void PreencheForma()
+        public virtual void DesenhaForma(Graphics graphics, Point[] ponto)
         {
-            var pen = caneta2;
+        }
+
+        public virtual void PreencheForma()
+        {
         }
     }
 }

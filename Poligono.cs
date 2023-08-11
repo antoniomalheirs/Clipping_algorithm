@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace DesenhaPrimitivas
 {
-    internal class Poligono
+    internal class Poligono : Desenha
     {
+
+        public override void DesenhaForma(Graphics graphics, Point[] pontos)
+        {
+            base.DesenhaForma(graphics, pontos);
+
+            graphics.DrawPolygon(caneta, pontos);
+        }
     }
 }

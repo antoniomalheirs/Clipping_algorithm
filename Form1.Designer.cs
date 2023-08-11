@@ -29,20 +29,35 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            panel2 = new Panel();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.BackColor = SystemColors.ActiveCaption;
             panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(446, 320);
+            panel1.Size = new Size(400, 300);
             panel1.TabIndex = 0;
+            panel1.Paint += panel1_Paint;
+            panel1.MouseClick += panel1_MouseClick;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = SystemColors.ActiveCaption;
+            panel2.Location = new Point(454, 12);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(400, 300);
+            panel2.TabIndex = 1;
+            panel2.Paint += panel2_Paint;
+            panel2.MouseClick += panel2_MouseClick;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(866, 505);
+            Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "Form1";
             Text = "Form1";
@@ -53,5 +68,6 @@
         #endregion
 
         private Panel panel1;
+        private Panel panel2;
     }
 }

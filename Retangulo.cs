@@ -11,76 +11,77 @@ namespace DesenhaPrimitivas
         int height;
 
         [Flags]
-        public enum OutCode
+        public enum Codigo
         {
-            Inside = 0, // 0000
-            Left = 1,   // 0001
-            Right = 2,  // 0010
-            Bottom = 4, // 0100
-            Top = 8     // 1000
+            Dentro = 0, // 0000
+            Esquerda = 1,   // 0001
+            Direira = 2,  // 0010
+            Baixo = 4, // 0100
+            Cima = 8     // 1000
         }
 
-        public OutCode ComputeOutCode(Point p, Point windowMin, Point windowMax)
+        public Codigo Retornacodigo(Point p, Point janelaMin, Point janelaMax)
         {
-            OutCode code = OutCode.Inside;
+            Codigo codigo = Codigo.Dentro;
 
-            if (p.X < windowMin.X)
-                code |= OutCode.Left;
-            else if (p.X > windowMax.X)
-                code |= OutCode.Right;
+            if (p.X < janelaMin.X)
+                codigo |= Codigo.Esquerda;
+            else if (p.X > janelaMax.X)
+                codigo |= Codigo.Direira;
 
-            if (p.Y < windowMin.Y)
-                code |= OutCode.Bottom;
-            else if (p.Y > windowMax.Y)
-                code |= OutCode.Top;
+            if (p.Y < janelaMin.Y)
+                codigo |= Codigo.Baixo;
+            else if (p.Y > janelaMax.Y)
+                codigo |= Codigo.Cima;
 
-            return code;
+            return codigo;
         }
 
-        public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point windowMin, Point windowMax)
+        public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
         {
-            OutCode outCodeP1 = ComputeOutCode(p1, windowMin, windowMax);
-            OutCode outCodeP2 = ComputeOutCode(p2, windowMin, windowMax);
+            Codigo codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
+            Codigo codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
 
             while (true)
             {
-                if ((outCodeP1 | outCodeP2) == OutCode.Inside)
+                if ((codeP1 | codeP2) == Codigo.Dentro)
                     return true;
-                else if ((outCodeP1 & outCodeP2) != 0)
+                else if ((codeP1 & codeP2) != 0)
                     return false;
-                OutCode outCode = outCodeP1 != OutCode.Inside ? outCodeP1 : outCodeP2;
-                Point intersection = new Point();
 
-                if ((outCode & OutCode.Top) != 0)
+                Codigo Code = codeP1 != Codigo.Dentro ? codeP1 : codeP2;
+                Point intersec = new Point();
+
+                if ((Code & Codigo.Cima) != 0)
                 {
-                    intersection.X = p1.X + (p2.X - p1.X) * (windowMax.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersection.Y = windowMax.Y;
+                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMax.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersec.Y = janelaMax.Y;
                 }
-                else if ((outCode & OutCode.Bottom) != 0)
+                else if ((Code & Codigo.Baixo) != 0)
                 {
-                    intersection.X = p1.X + (p2.X - p1.X) * (windowMin.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersection.Y = windowMin.Y;
+                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMin.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersec.Y = janelaMin.Y;
                 }
-                else if ((outCode & OutCode.Right) != 0)
+                else if ((Code & Codigo.Direira) != 0)
                 {
-                    intersection.Y = p1.Y + (p2.Y - p1.Y) * (windowMax.X - p1.X) / (p2.X - p1.X);
-                    intersection.X = windowMax.X;
+                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMax.X - p1.X) / (p2.X - p1.X);
+                    intersec.X = janelaMax.X;
                 }
-                else if ((outCode & OutCode.Left) != 0)
+                else if ((Code & Codigo.Esquerda) != 0)
                 {
-                    intersection.Y = p1.Y + (p2.Y - p1.Y) * (windowMin.X - p1.X) / (p2.X - p1.X);
-                    intersection.X = windowMin.X;
+                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMin.X - p1.X) / (p2.X - p1.X);
+                    intersec.X = janelaMin.X;
                 }
 
-                if (outCode == outCodeP1)
+                if (Code == codeP1)
                 {
-                    p1 = intersection;
-                    outCodeP1 = ComputeOutCode(p1, windowMin, windowMax);
+                    p1 = intersec;
+                    codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
                 }
                 else
                 {
-                    p2 = intersection;
-                    outCodeP2 = ComputeOutCode(p2, windowMin, windowMax);
+                    p2 = intersec;
+                    codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
                 }
             }
         }

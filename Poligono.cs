@@ -8,43 +8,43 @@ namespace DesenhaPrimitivas
     {
         Point[] pontos;
 
-        private Point ClipPoint(Point point, Point windowMin, Point windowMax)
+        private Point recortaPonto(Point ponto, Point janelaMin, Point janelaMax)
         {
-            if (point.X < windowMin.X)
-                point.X = windowMin.X;
-            else if (point.X > windowMax.X)
-                point.X = windowMax.X;
+            if (ponto.X < janelaMin.X)
+                ponto.X = janelaMin.X;
+            else if (ponto.X > janelaMax.X)
+                ponto.X = janelaMax.X;
 
-            if (point.Y < windowMin.Y)
-                point.Y = windowMin.Y;
-            else if (point.Y > windowMax.Y)
-                point.Y = windowMax.Y;
+            if (ponto.Y < janelaMin.Y)
+                ponto.Y = janelaMin.Y;
+            else if (ponto.Y > janelaMax.Y)
+                ponto.Y = janelaMax.Y;
 
-            return point;
+            return ponto;
         }
 
-        private List<Point> ClipPoints(List<Point> points, Point windowMin, Point windowMax)
+        private List<Point> recortaPontos(List<Point> pontos, Point janelaMin, Point janelaMax)
         {
-            List<Point> clippedPoints = new List<Point>();
+            List<Point> pontosRecortados = new List<Point>();
 
-            foreach (Point point in points)
+            foreach (Point point in pontos)
             {
-                Point clippedPoint = ClipPoint(point, windowMin, windowMax);
-                clippedPoints.Add(clippedPoint);
+                Point pontosrecortados = recortaPonto(point, janelaMin, janelaMax);
+                pontosRecortados.Add(pontosrecortados);
             }
 
-            return clippedPoints;
+            return pontosRecortados;
         }
 
         public void DesenhaForma(Graphics graphics, Point[] ponto, Panel panel)
         {
-            this.pontos = ClipPoints(ponto.ToList(), panel.ClientRectangle.Location, new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom)).ToArray();
+            this.pontos = recortaPontos(ponto.ToList(), panel.ClientRectangle.Location, new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom)).ToArray();
             graphics.DrawPolygon(caneta, pontos);
         }
 
         public void PreencheForma(Graphics graphics, Point[] ponto, Panel panel)
         {
-            this.pontos = ClipPoints(ponto.ToList(), panel.ClientRectangle.Location, new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom)).ToArray();
+            this.pontos = recortaPontos(ponto.ToList(), panel.ClientRectangle.Location, new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom)).ToArray();
             graphics.FillPolygon(caneta2, pontos);
         }
 

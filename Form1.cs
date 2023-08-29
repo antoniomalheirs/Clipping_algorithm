@@ -16,166 +16,166 @@ namespace DesenhaPrimitivas
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
-        private bool IsInsideWindow(Point point, Point windowMin, Point windowMax)
+        private bool Dentrojanela(Point ponto, Point janelaMin, Point janelaMax)
         {
-            return (point.X >= windowMin.X && point.X <= windowMax.X) &&
-                   (point.Y >= windowMin.Y && point.Y <= windowMax.Y);
+            return (ponto.X >= janelaMin.X && ponto.X <= janelaMax.X) &&
+                   (ponto.Y >= janelaMin.Y && ponto.Y <= janelaMax.Y);
         }
 
         [Flags]
-        public enum OutCode
+        public enum Codigo
         {
-            Inside = 0, // 0000
-            Left = 1,   // 0001
-            Right = 2,  // 0010
-            Bottom = 4, // 0100
-            Top = 8     // 1000
+            Dentro = 0, // 0000
+            Esquerda = 1,   // 0001
+            Direira = 2,  // 0010
+            Baixo = 4, // 0100
+            Cima = 8     // 1000
         }
 
-        public OutCode ComputeOutCode(Point p, Point windowMin, Point windowMax)
+        public Codigo Retornacodigo(Point p, Point janelaMin, Point janelaMax)
         {
-            OutCode code = OutCode.Inside;
+            Codigo codigo = Codigo.Dentro;
 
-            if (p.X < windowMin.X)
-                code |= OutCode.Left;
-            else if (p.X > windowMax.X)
-                code |= OutCode.Right;
+            if (p.X < janelaMin.X)
+                codigo |= Codigo.Esquerda;
+            else if (p.X > janelaMax.X)
+                codigo |= Codigo.Direira;
 
-            if (p.Y < windowMin.Y)
-                code |= OutCode.Bottom;
-            else if (p.Y > windowMax.Y)
-                code |= OutCode.Top;
+            if (p.Y < janelaMin.Y)
+                codigo |= Codigo.Baixo;
+            else if (p.Y > janelaMax.Y)
+                codigo |= Codigo.Cima;
 
-            return code;
+            return codigo;
         }
 
-        public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point windowMin, Point windowMax)
+        public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
         {
-            OutCode outCodeP1 = ComputeOutCode(p1, windowMin, windowMax);
-            OutCode outCodeP2 = ComputeOutCode(p2, windowMin, windowMax);
+            Codigo codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
+            Codigo codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
 
             while (true)
             {
-                if ((outCodeP1 | outCodeP2) == OutCode.Inside)
+                if ((codeP1 | codeP2) == Codigo.Dentro)
                     return true;
-                else if ((outCodeP1 & outCodeP2) != 0)
+                else if ((codeP1 & codeP2) != 0)
                     return false;
-                OutCode outCode = outCodeP1 != OutCode.Inside ? outCodeP1 : outCodeP2;
-                Point intersection = new Point();
 
-                if ((outCode & OutCode.Top) != 0)
+                Codigo Code = codeP1 != Codigo.Dentro ? codeP1 : codeP2;
+                Point intersec = new Point();
+
+                if ((Code & Codigo.Cima) != 0)
                 {
-                    intersection.X = p1.X + (p2.X - p1.X) * (windowMax.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersection.Y = windowMax.Y;
+                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMax.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersec.Y = janelaMax.Y;
                 }
-                else if ((outCode & OutCode.Bottom) != 0)
+                else if ((Code & Codigo.Baixo) != 0)
                 {
-                    intersection.X = p1.X + (p2.X - p1.X) * (windowMin.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersection.Y = windowMin.Y;
+                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMin.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersec.Y = janelaMin.Y;
                 }
-                else if ((outCode & OutCode.Right) != 0)
+                else if ((Code & Codigo.Direira) != 0)
                 {
-                    intersection.Y = p1.Y + (p2.Y - p1.Y) * (windowMax.X - p1.X) / (p2.X - p1.X);
-                    intersection.X = windowMax.X;
+                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMax.X - p1.X) / (p2.X - p1.X);
+                    intersec.X = janelaMax.X;
                 }
-                else if ((outCode & OutCode.Left) != 0)
+                else if ((Code & Codigo.Esquerda) != 0)
                 {
-                    intersection.Y = p1.Y + (p2.Y - p1.Y) * (windowMin.X - p1.X) / (p2.X - p1.X);
-                    intersection.X = windowMin.X;
+                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMin.X - p1.X) / (p2.X - p1.X);
+                    intersec.X = janelaMin.X;
                 }
 
-                if (outCode == outCodeP1)
+                if (Code == codeP1)
                 {
-                    p1 = intersection;
-                    outCodeP1 = ComputeOutCode(p1, windowMin, windowMax);
+                    p1 = intersec;
+                    codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
                 }
                 else
                 {
-                    p2 = intersection;
-                    outCodeP2 = ComputeOutCode(p2, windowMin, windowMax);
+                    p2 = intersec;
+                    codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
                 }
             }
         }
 
-        private List<Point> ClipPolygon(List<Point> polygon, Point windowMin, Point windowMax)
+        private List<Point> recortaPoligono(List<Point> poligono, Point janelaMin, Point janelaMax)
         {
-            List<Point> clippedPolygon = new List<Point>();
+            List<Point> recortado = new List<Point>();
 
-            for (int i = 0; i < polygon.Count; i++)
+            for (int i = 0; i < poligono.Count; i++)
             {
-                int j = (i + 1) % polygon.Count;
+                int j = (i + 1) % poligono.Count;
 
-                Point p1 = polygon[i];
-                Point p2 = polygon[j];
+                Point p1 = poligono[i];
+                Point p2 = poligono[j];
 
-                bool p1Inside = IsInsideWindow(p1, windowMin, windowMax);
-                bool p2Inside = IsInsideWindow(p2, windowMin, windowMax);
+                bool p1Inside = Dentrojanela(p1, janelaMin, janelaMax);
+                bool p2Inside = Dentrojanela(p2, janelaMin, janelaMax);
 
                 if (p1Inside && p2Inside)
                 {
-                    clippedPolygon.Add(p1);
+                    recortado.Add(p1);
                 }
                 else if (p1Inside && !p2Inside)
                 {
-                    clippedPolygon.Add(p1);
-                    CohenSutherlandClip(ref p1, ref p2, windowMin, windowMax); // Use 'ref' aqui
-                    clippedPolygon.Add(p1);
+                    recortado.Add(p1);
+                    CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax); // Use 'ref' aqui
+                    recortado.Add(p1);
                 }
                 else if (!p1Inside && p2Inside)
                 {
-                    CohenSutherlandClip(ref p1, ref p2, windowMin, windowMax); // Use 'ref' aqui
-                    clippedPolygon.Add(p1);
+                    CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax); // Use 'ref' aqui
+                    recortado.Add(p1);
                 }
             }
 
-            return clippedPolygon;
+            return recortado;
         }
 
-        private List<Point> ClipRectangle(Point p1, Point p2, Point p3, Point p4, Point windowMin, Point windowMax)
+        private List<Point> recortaRetangulo(Point p1, Point p2, Point p3, Point p4, Point janelaMin, Point janelaMax)
         {
-            List<Point> clippedPoints = new List<Point>();
-            List<Point> rectanglePoints = new List<Point> { p1, p2, p3, p4 };
+            List<Point> pontosRecortados = new List<Point>();
+            List<Point> pontosRetangulo = new List<Point> { p1, p2, p3, p4 };
 
-            for (int i = 0; i < rectanglePoints.Count; i++)
+            for (int i = 0; i < pontosRetangulo.Count; i++)
             {
-                int j = (i + 1) % rectanglePoints.Count;
+                int j = (i + 1) % pontosRetangulo.Count;
 
-                Point currentPoint = rectanglePoints[i];
-                Point nextPoint = rectanglePoints[j];
+                Point pontoAtual = pontosRetangulo[i];
+                Point pontoProximo = pontosRetangulo[j];
 
-                bool currentInside = IsInsideWindow(currentPoint, windowMin, windowMax);
-                bool nextInside = IsInsideWindow(nextPoint, windowMin, windowMax);
+                bool atualDentro = Dentrojanela(pontoAtual, janelaMin, janelaMax);
+                bool proximoDentro = Dentrojanela(pontoProximo, janelaMin, janelaMax);
 
-                if (currentInside && nextInside)
+                if (atualDentro && proximoDentro)
                 {
-                    clippedPoints.Add(currentPoint);
+                    pontosRecortados.Add(pontoAtual);
                 }
-                else if (currentInside && !nextInside)
+                else if (atualDentro && !proximoDentro)
                 {
-                    clippedPoints.Add(currentPoint);
-                    CohenSutherlandClip(ref currentPoint, ref nextPoint, windowMin, windowMax);
-                    clippedPoints.Add(currentPoint);
+                    pontosRecortados.Add(pontoAtual);
+                    CohenSutherlandClip(ref pontoAtual, ref pontoProximo, janelaMin, janelaMax);
+                    pontosRecortados.Add(pontoAtual);
                 }
-                else if (!currentInside && nextInside)
+                else if (!atualDentro && proximoDentro)
                 {
-                    CohenSutherlandClip(ref currentPoint, ref nextPoint, windowMin, windowMax);
-                    clippedPoints.Add(currentPoint);
+                    CohenSutherlandClip(ref pontoAtual, ref pontoProximo, janelaMin, janelaMax);
+                    pontosRecortados.Add(pontoAtual);
                 }
             }
 
-            return clippedPoints;
+            return pontosRecortados;
         }
 
-        private void DrawLinesOnPanels(Graphics graphics, List<Point> clippedPolygon, Panel panel1, Panel panel4)
+        private void desenhapoligono(Graphics graphics, List<Point> poligonoRecortado, Panel panel)
         {
-            if (clippedPolygon.Count > 1)
+            if (poligonoRecortado.Count > 1)
             {
                 Poligono poligono = new Poligono();
-                poligono.DesenhaForma(graphics, clippedPolygon.ToArray(), panel1);
-                poligono.PreencheForma(graphics, clippedPolygon.ToArray(), panel1);
+                poligono.DesenhaForma(graphics, poligonoRecortado.ToArray(), panel);
+                poligono.PreencheForma(graphics, poligonoRecortado.ToArray(), panel);
             }
         }
 
@@ -183,8 +183,8 @@ namespace DesenhaPrimitivas
         {
             using (Graphics graphics = e.Graphics)
             {
-                List<Point> clippedPolygon = ClipPolygon(Poligono, panel1.ClientRectangle.Location, new Point(panel1.ClientRectangle.Right, panel1.ClientRectangle.Bottom));
-                DrawLinesOnPanels(graphics, clippedPolygon, panel1, panel4);
+                List<Point> poligonoRecortado = recortaPoligono(Poligono, panel1.ClientRectangle.Location, new Point(panel1.ClientRectangle.Right, panel1.ClientRectangle.Bottom));
+                desenhapoligono(graphics, poligonoRecortado, panel4);
             }
         }
 
@@ -192,6 +192,7 @@ namespace DesenhaPrimitivas
         {
             Poligono.Add(e.Location);
             panel4.Invalidate();
+            //panel1.Invalidate();
         }
 
         private void panel2_MouseClick(object sender, MouseEventArgs e)
@@ -227,16 +228,16 @@ namespace DesenhaPrimitivas
                     Point p3 = new Point(x + width, y + height);
                     Point p4 = new Point(x, y + height);
 
-                    Point windowMin = new Point(0, 0);
-                    Point windowMax = new Point(panel2.Width, panel2.Height);
+                    Point janelaMin = new Point(0, 0);
+                    Point janelaMax = new Point(panel2.Width, panel2.Height);
 
-                    List<Point> clippedRectangle = ClipRectangle(p1, p2, p3, p4, windowMin, windowMax);
+                    List<Point> retanguloRecortado = recortaRetangulo(p1, p2, p3, p4, janelaMin, janelaMax);
 
-                    if (clippedRectangle.Count > 2)
+                    if (retanguloRecortado.Count > 2)
                     {
                         Retangulo ret = new Retangulo();
-                        ret.DesenhaForma(graphics, clippedRectangle[0], clippedRectangle[2], panel2);
-                        ret.PreencheForma(graphics, clippedRectangle[0], clippedRectangle[2], panel2);
+                        ret.DesenhaForma(graphics, retanguloRecortado[0], retanguloRecortado[2], panel2);
+                        ret.PreencheForma(graphics, retanguloRecortado[0], retanguloRecortado[2], panel2);
                     }
                 }
             }

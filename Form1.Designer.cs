@@ -89,9 +89,7 @@
             ResumeLayout(false);
         }
 
-
         #endregion
-
         private Panel panel1;
         private Panel panel2;
         private Panel panel4;

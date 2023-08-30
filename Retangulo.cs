@@ -5,22 +5,22 @@ namespace DesenhaPrimitivas
 {
     internal class Retangulo : Desenha
     {
-        int x;
-        int y;
-        int width;
-        int height;
+        public int x;
+        public int y;
+        public int largura;
+        public int altura;
 
         [Flags]
         public enum Codigo
         {
-            Dentro = 0, // 0000
-            Esquerda = 1,   // 0001
-            Direira = 2,  // 0010
-            Baixo = 4, // 0100
-            Cima = 8     // 1000
+            Dentro = 0,
+            Esquerda = 1,
+            Direira = 2,
+            Baixo = 4,
+            Cima = 8
         }
 
-        public Codigo Retornacodigo(Point p, Point janelaMin, Point janelaMax)
+        public Codigo RetornaCodigo(Point p, Point janelaMin, Point janelaMax)
         {
             Codigo codigo = Codigo.Dentro;
 
@@ -39,96 +39,103 @@ namespace DesenhaPrimitivas
 
         public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
         {
-            Codigo codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
-            Codigo codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
+            Codigo codigoP1 = RetornaCodigo(p1, janelaMin, janelaMax);
+            Codigo codigoP2 = RetornaCodigo(p2, janelaMin, janelaMax);
 
             while (true)
             {
-                if ((codeP1 | codeP2) == Codigo.Dentro)
+                if ((codigoP1 | codigoP2) == Codigo.Dentro)
                     return true;
-                else if ((codeP1 & codeP2) != 0)
+                else if ((codigoP1 & codigoP2) != 0)
                     return false;
 
-                Codigo Code = codeP1 != Codigo.Dentro ? codeP1 : codeP2;
-                Point intersec = new Point();
+                Codigo codigo = codigoP1 != Codigo.Dentro ? codigoP1 : codigoP2;
+                Point intersecao = new Point();
 
-                if ((Code & Codigo.Cima) != 0)
+                if ((codigo & Codigo.Cima) != 0)
                 {
-                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMax.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersec.Y = janelaMax.Y;
+                    intersecao.X = p1.X + (p2.X - p1.X) * (janelaMax.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersecao.Y = janelaMax.Y;
                 }
-                else if ((Code & Codigo.Baixo) != 0)
+                else if ((codigo & Codigo.Baixo) != 0)
                 {
-                    intersec.X = p1.X + (p2.X - p1.X) * (janelaMin.Y - p1.Y) / (p2.Y - p1.Y);
-                    intersec.Y = janelaMin.Y;
+                    intersecao.X = p1.X + (p2.X - p1.X) * (janelaMin.Y - p1.Y) / (p2.Y - p1.Y);
+                    intersecao.Y = janelaMin.Y;
                 }
-                else if ((Code & Codigo.Direira) != 0)
+                else if ((codigo & Codigo.Direira) != 0)
                 {
-                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMax.X - p1.X) / (p2.X - p1.X);
-                    intersec.X = janelaMax.X;
+                    intersecao.Y = p1.Y + (p2.Y - p1.Y) * (janelaMax.X - p1.X) / (p2.X - p1.X);
+                    intersecao.X = janelaMax.X;
                 }
-                else if ((Code & Codigo.Esquerda) != 0)
+                else if ((codigo & Codigo.Esquerda) != 0)
                 {
-                    intersec.Y = p1.Y + (p2.Y - p1.Y) * (janelaMin.X - p1.X) / (p2.X - p1.X);
-                    intersec.X = janelaMin.X;
+                    intersecao.Y = p1.Y + (p2.Y - p1.Y) * (janelaMin.X - p1.X) / (p2.X - p1.X);
+                    intersecao.X = janelaMin.X;
                 }
 
-                if (Code == codeP1)
+                if (codigo == codigoP1)
                 {
-                    p1 = intersec;
-                    codeP1 = Retornacodigo(p1, janelaMin, janelaMax);
+                    p1 = intersecao;
+                    codigoP1 = RetornaCodigo(p1, janelaMin, janelaMax);
                 }
                 else
                 {
-                    p2 = intersec;
-                    codeP2 = Retornacodigo(p2, janelaMin, janelaMax);
+                    p2 = intersecao;
+                    codigoP2 = RetornaCodigo(p2, janelaMin, janelaMax);
                 }
             }
         }
 
-        public void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2, Panel panel)
+        private void RecortarRetangulo(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
+        {
+            CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax);
+        }
+
+        public void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2, Panel painel)
         {
             this.x = Math.Min(ponto1.X, ponto2.X);
             this.y = Math.Min(ponto1.Y, ponto2.Y);
-            this.width = Math.Abs(ponto2.X - ponto1.X);
-            this.height = Math.Abs(ponto2.Y - ponto1.Y);
+            this.largura = Math.Abs(ponto2.X - ponto1.X);
+            this.altura = Math.Abs(ponto2.Y - ponto1.Y);
 
-            Point windowMin = new Point(panel.ClientRectangle.Left, panel.ClientRectangle.Top);
-            Point windowMax = new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom);
+            Point janelaMin = new Point(painel.ClientRectangle.Left, painel.ClientRectangle.Top);
+            Point janelaMax = new Point(painel.ClientRectangle.Right, painel.ClientRectangle.Bottom);
 
             Point p1 = new Point(x, y);
-            Point p2 = new Point(x + width, y + height);
+            Point p2 = new Point(x + largura, y + altura);
 
-            if (CohenSutherlandClip(ref p1, ref p2, windowMin, windowMax))
+            if (CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax))
             {
                 x = p1.X;
                 y = p1.Y;
-                width = p2.X - p1.X;
-                height = p2.Y - p1.Y;
-                graphics.DrawRectangle(caneta, x, y, width, height);
+                largura = p2.X - p1.X;
+                altura = p2.Y - p1.Y;
+
+                graphics.DrawRectangle(caneta, x, y, largura, altura);
             }
         }
 
-        public void PreencheForma(Graphics graphics, Point ponto1, Point ponto2, Panel panel)
+        public void PreencheForma(Graphics graphics, Point ponto1, Point ponto2, Panel painel)
         {
             this.x = Math.Min(ponto1.X, ponto2.X);
             this.y = Math.Min(ponto1.Y, ponto2.Y);
-            this.width = Math.Abs(ponto2.X - ponto1.X);
-            this.height = Math.Abs(ponto2.Y - ponto1.Y);
+            this.largura = Math.Abs(ponto2.X - ponto1.X);
+            this.altura = Math.Abs(ponto2.Y - ponto1.Y);
 
-            Point windowMin = new Point(panel.ClientRectangle.Left, panel.ClientRectangle.Top);
-            Point windowMax = new Point(panel.ClientRectangle.Right, panel.ClientRectangle.Bottom);
+            Point janelaMin = new Point(painel.ClientRectangle.Left, painel.ClientRectangle.Top);
+            Point janelaMax = new Point(painel.ClientRectangle.Right, painel.ClientRectangle.Bottom);
 
             Point p1 = new Point(x, y);
-            Point p2 = new Point(x + width, y + height);
+            Point p2 = new Point(x + largura, y + altura);
 
-            if (CohenSutherlandClip(ref p1, ref p2, windowMin, windowMax))
+            if (CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax))
             {
                 x = p1.X;
                 y = p1.Y;
-                width = p2.X - p1.X;
-                height = p2.Y - p1.Y;
-                graphics.FillRectangle(caneta2, x + 1, y + 1, width - 1, height - 1);
+                largura = p2.X - p1.X;
+                altura = p2.Y - p1.Y;
+
+                graphics.FillRectangle(caneta2, x + 1, y + 1, largura - 1, altura - 1);
             }
         }
     }

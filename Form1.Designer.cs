@@ -50,6 +50,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(400, 300);
             panel1.TabIndex = 2;
+            panel1.Paint += panel1_Paint;
             panel1.MouseClick += panel1_MouseClick;
             // 
             // label1
@@ -73,7 +74,6 @@
             panel4.Size = new Size(300, 180);
             panel4.TabIndex = 2;
             panel4.Paint += panel1_Paint;
-            panel4.MouseClick += panel1_MouseClick;
             // 
             // label3
             // 
@@ -96,6 +96,7 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(400, 300);
             panel2.TabIndex = 1;
+            panel2.Paint += panel2_Paint;
             panel2.MouseClick += panel2_MouseClick;
             // 
             // label2
@@ -118,7 +119,6 @@
             panel3.Size = new Size(300, 180);
             panel3.TabIndex = 1;
             panel3.Paint += panel2_Paint;
-            panel3.MouseClick += panel2_MouseClick;
             // 
             // label4
             // 
@@ -143,7 +143,7 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Recorte figuras";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

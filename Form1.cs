@@ -100,40 +100,6 @@ namespace DesenhaPrimitivas
             }
         }
 
-        private List<Point> recortaPoligono(List<Point> poligono, Point janelaMin, Point janelaMax)
-        {
-            List<Point> recortado = new List<Point>();
-
-            for (int i = 0; i < poligono.Count; i++)
-            {
-                int j = (i + 1) % poligono.Count;
-
-                Point p1 = poligono[i];
-                Point p2 = poligono[j];
-
-                bool p1Inside = Dentrojanela(p1, janelaMin, janelaMax);
-                bool p2Inside = Dentrojanela(p2, janelaMin, janelaMax);
-
-                if (p1Inside && p2Inside)
-                {
-                    recortado.Add(p1);
-                }
-                else if (p1Inside && !p2Inside)
-                {
-                    recortado.Add(p1);
-                    CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax); // Use 'ref' aqui
-                    recortado.Add(p1);
-                }
-                else if (!p1Inside && p2Inside)
-                {
-                    CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax); // Use 'ref' aqui
-                    recortado.Add(p1);
-                }
-            }
-
-            return recortado;
-        }
-
         private List<Point> recortaRetangulo(Point p1, Point p2, Point p3, Point p4, Point janelaMin, Point janelaMax)
         {
             List<Point> pontosRecortados = new List<Point>();
@@ -183,8 +149,7 @@ namespace DesenhaPrimitivas
         {
             using (Graphics graphics = e.Graphics)
             {
-                List<Point> poligonoRecortado = recortaPoligono(Poligono, panel1.ClientRectangle.Location, new Point(panel1.ClientRectangle.Right, panel1.ClientRectangle.Bottom));
-                desenhapoligono(graphics, poligonoRecortado, panel4);
+                desenhapoligono(graphics, Poligono, panel4);
             }
         }
 
@@ -241,7 +206,5 @@ namespace DesenhaPrimitivas
                 }
             }
         }
-
-
     }
 }

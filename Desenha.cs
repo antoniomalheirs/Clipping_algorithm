@@ -12,7 +12,7 @@ namespace DesenhaPrimitivas
     public class Desenha
     {
         protected static Pen caneta = new Pen(Color.Black, 5);
-        protected static Brush caneta2 = new SolidBrush(Color.Red);
+        protected static Brush caneta2 = new SolidBrush(Color.RebeccaPurple);
 
         public virtual void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2)
         {

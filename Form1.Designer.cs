@@ -36,6 +36,8 @@
             label2 = new Label();
             panel3 = new Panel();
             label4 = new Label();
+            bt1 = new Button();
+            bt2 = new Button();
             panel1.SuspendLayout();
             panel4.SuspendLayout();
             panel2.SuspendLayout();
@@ -131,11 +133,33 @@
             label4.TabIndex = 0;
             label4.Text = "Desenho recortado";
             // 
+            // bt1
+            // 
+            bt1.Location = new Point(337, 329);
+            bt1.Name = "bt1";
+            bt1.Size = new Size(75, 23);
+            bt1.TabIndex = 3;
+            bt1.Text = "Limpar";
+            bt1.UseVisualStyleBackColor = true;
+            bt1.Click += bt1_Click;
+            // 
+            // bt2
+            // 
+            bt2.Location = new Point(779, 329);
+            bt2.Name = "bt2";
+            bt2.Size = new Size(75, 23);
+            bt2.TabIndex = 4;
+            bt2.Text = "Limpar";
+            bt2.UseVisualStyleBackColor = true;
+            bt2.Click += bt2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(873, 522);
+            Controls.Add(bt2);
+            Controls.Add(bt1);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);
@@ -162,5 +186,7 @@
         private Label label2;
         private Label label3;
         private Label label4;
+        private Button bt1;
+        private Button bt2;
     }
 }

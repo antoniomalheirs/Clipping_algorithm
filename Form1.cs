@@ -65,6 +65,16 @@ namespace DesenhaPrimitivas
             }
         }
 
+        private void bt1_Click(object sender, EventArgs e)
+        {
+            LimparPanelComExcecao(panel4, label3, PontosPoligono);
+        }
+
+        private void bt2_Click(object sender, EventArgs e)
+        {
+            LimparPanelComExcecao(panel3, label4, ListaRetangulos);
+        }
+
         private void DesenhaPoligono(Graphics graphics, List<Point> pontos, Panel panel)
         {
             if (pontos.Count > 1)
@@ -77,7 +87,7 @@ namespace DesenhaPrimitivas
 
         private void DesenhaRetangulo(Graphics graphics, List<Point> pontos, Panel panel)
         {
-            if (pontos.Count == 2) // Verifique se a lista contém dois pontos
+            if (pontos.Count == 2)
             {
                 Point pontoSuperiorEsquerdo = pontos[0];
                 Point pontoInferiorDireito = pontos[1];
@@ -86,5 +96,39 @@ namespace DesenhaPrimitivas
                 retangulo.PreencheForma(graphics, pontoSuperiorEsquerdo, pontoInferiorDireito, panel);
             }
         }
+
+        private void LimparPanelComExcecao(Panel panel, Control excecao, List<Point> pontos)
+        {
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
+            {
+                Control controle = panel.Controls[i];
+
+                if (controle != excecao)
+                {
+                    panel.Controls.RemoveAt(i);
+                    controle.Dispose();
+                }
+            }
+            pontos.Clear();
+            panel.Invalidate();
+        }
+
+        private void LimparPanelComExcecao(Panel panel, Control excecao, List<List<Point>> pontos)
+        {
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
+            {
+                Control controle = panel.Controls[i];
+
+                if (controle != excecao)
+                {
+                    panel.Controls.RemoveAt(i);
+                    controle.Dispose();
+                }
+            }
+            pontos.Clear();
+            panel.Invalidate(); 
+        }
+
+        
     }
 }

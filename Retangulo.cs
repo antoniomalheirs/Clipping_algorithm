@@ -11,7 +11,7 @@ namespace DesenhaPrimitivas
         public int altura;
 
         [Flags]
-        public enum Codigo
+        private enum Codigo
         {
             Dentro = 0,
             Esquerda = 1,
@@ -20,7 +20,7 @@ namespace DesenhaPrimitivas
             Cima = 8
         }
 
-        public Codigo RetornaCodigo(Point p, Point janelaMin, Point janelaMax)
+        private Codigo RetornaCodigo(Point p, Point janelaMin, Point janelaMax)
         {
             Codigo codigo = Codigo.Dentro;
 
@@ -37,7 +37,7 @@ namespace DesenhaPrimitivas
             return codigo;
         }
 
-        public bool CohenSutherlandClip(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
+        private bool CohenSutherlandClip(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
         {
             Codigo codigoP1 = RetornaCodigo(p1, janelaMin, janelaMax);
             Codigo codigoP2 = RetornaCodigo(p2, janelaMin, janelaMax);
@@ -84,11 +84,6 @@ namespace DesenhaPrimitivas
                     codigoP2 = RetornaCodigo(p2, janelaMin, janelaMax);
                 }
             }
-        }
-
-        private void RecortarRetangulo(ref Point p1, ref Point p2, Point janelaMin, Point janelaMax)
-        {
-            CohenSutherlandClip(ref p1, ref p2, janelaMin, janelaMax);
         }
 
         public void DesenhaForma(Graphics graphics, Point ponto1, Point ponto2, Panel painel)

@@ -12,7 +12,7 @@ namespace DesenhaPrimitivas
 
         private Point PontoInicialRetangulo;
         private Point PontoFinalRetangulo;
-        private bool desenhandoRetangulo = false; // Flag para indicar que estamos desenhando um retângulo
+        private bool desenhandoRetangulo = false;
 
         public Form1()
         {

@@ -126,9 +126,9 @@ namespace DesenhaPrimitivas
                 }
             }
             pontos.Clear();
-            panel.Invalidate(); 
+            panel.Invalidate();
         }
 
-        
+
     }
 }

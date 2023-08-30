@@ -192,7 +192,6 @@ namespace DesenhaPrimitivas
         {
             Poligono.Add(e.Location);
             panel4.Invalidate();
-            //panel1.Invalidate();
         }
 
         private void panel2_MouseClick(object sender, MouseEventArgs e)
@@ -242,5 +241,7 @@ namespace DesenhaPrimitivas
                 }
             }
         }
+
+
     }
 }
